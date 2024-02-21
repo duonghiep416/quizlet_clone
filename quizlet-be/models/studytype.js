@@ -1,7 +1,7 @@
 'use strict'
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class StudyType extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,24 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.belongsTo(models.Provider, {
-        foreignKey: 'provider_id'
-      })
-      User.hasMany(models.Category, {
-        foreignKey: 'user_id'
-      })
-      User.hasMany(models.Flashcard, {
-        foreignKey: 'user_id'
-      })
-      User.hasMany(models.StudySession, {
-        foreignKey: 'user_id'
-      })
-      User.hasMany(models.Achievement, {
-        foreignKey: 'user_id'
-      })
+      StudyType.hasMany(models.StudySession, { foreignKey: 'study_type_id' })
     }
   }
-  User.init(
+  StudyType.init(
     {
       id: {
         autoIncrement: true,
@@ -34,22 +20,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER
       },
       name: DataTypes.STRING,
-      email: DataTypes.STRING,
-      password: DataTypes.STRING,
-      status: DataTypes.BOOLEAN,
-      provider_id: {
-        type: DataTypes.INTEGER
-      },
+      description: DataTypes.STRING,
       created_at: DataTypes.DATE,
       updated_at: DataTypes.DATE
     },
     {
       sequelize,
-      modelName: 'User',
-      tableName: 'users',
+      modelName: 'StudyType',
+      tableName: 'study_type',
       createdAt: 'created_at',
       updatedAt: 'updated_at'
     }
   )
-  return User
+  return StudyType
 }
