@@ -1,0 +1,3 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" class="AssemblyIcon AssemblyIcon--small" aria-label="" width="24"  height="24" ><defs><symbol id="shield" viewBox="0 0 24 24">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M11.19 2.15817L4.19 5.00974C3.47 5.30315 3 5.96332 3 6.68768V10.9971C3 16.086 6.84 20.8447 12 22C17.16 20.8447 21 16.086 21 10.9971V6.68768C21 5.96332 20.53 5.30315 19.81 5.00974L12.81 2.15817C12.3 1.94728 11.7 1.94728 11.19 2.15817ZM11.9995 12H19C18.47 15.7776 15.7195 19.0476 11.9995 20.1021V12H4.99951V6.68776L11.9995 3.83618V12Z"></path>
+</symbol></defs><noscript fill="#F6F7FB"></noscript><use xlink:href="#shield" fill="#F6F7FB"></use><noscript fill="#F6F7FB"></noscript></svg>

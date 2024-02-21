@@ -1,0 +1,3 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" aria-label="set" class="AssemblyIcon AssemblyIcon--small" role="img" width="24"  height="24" ><defs><symbol id="set" viewBox="0 0 24 24">
+    <path d="M5 21V19H3C3 20.1 3.89 21 5 21ZM3 19H5V7H3V19ZM5 21H17V19H5V21ZM19 3H9C7.89 3 7 3.9 7 5V15C7 16.1 7.89 17 9 17H19C20.1 17 21 16.1 21 15V5C21 3.9 20.1 3 19 3ZM19 15H9V5H19V15Z"></path>
+</symbol></defs><noscript fill="#ffffff"></noscript><use xlink:href="#set" fill="#ffffff"></use><noscript fill="#ffffff"></noscript></svg>
