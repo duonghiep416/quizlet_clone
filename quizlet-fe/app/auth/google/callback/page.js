@@ -1,18 +1,25 @@
-const Home = async (request) => {
-  console.log('req', request)
+'use client'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import ClipLoader from 'react-spinners/ClipLoader'
+const Home = (request) => {
+  const router = useRouter()
+  // const [dataInit, setDataInit] = useState({ status: null })
   const path = new URLSearchParams(request.searchParams).toString()
-  console.log(path)
-  const result = await fetch(
-    `http://localhost:3000/api/auth/google/callback?${path}`
-  )
-  const data = await result.json()
-  const user = data.data
-  console.log('user', user)
-  return (
-    <div>
-      <h1>Home</h1>
-    </div>
-  )
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch(
+        `${process.env.NEXT_PUBLIC_API}/auth/google/callback?${path}`
+      )
+      const data = await result.json()
+      if (data.status === 200) {
+        localStorage.setItem('accessToken', data.access_token)
+        router.push('/')
+      }
+    }
+    fetchData()
+  }, [])
+  return <div></div>
 }
 
 export default Home

@@ -52,27 +52,10 @@ module.exports = {
     res.status(response.status).json(response)
   },
   profile: async (req, res) => {
-    const bearer = req.get('Authorization')
-    const response = {}
-    if (bearer) {
-      const token = bearer.replace('Bearer ', '').trim()
-      try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        const { id } = decoded
-        const user = await User.findByPk(id)
-        delete user.dataValues.password
-        Object.assign(response, {
-          status: 200,
-          message: 'Success',
-          data: user
-        })
-      } catch (error) {
-        Object.assign(response, {
-          status: 401,
-          message: 'Unauthorized'
-        })
-      }
-    }
-    res.json(response)
+    res.json({
+      status: 200,
+      message: 'Success',
+      data: req.user.dataValues
+    })
   }
 }

@@ -3,7 +3,10 @@ import list from '@/list/list'
 import SearchInput from './SearchInput'
 import Button from './Button'
 import DropdownBtn from './DropdownBtn'
+import LibraryDropdown from './LibraryDropdown'
+import { useSelector } from 'react-redux'
 const Header = () => {
+  const user = useSelector((state) => state.user.userData)
   return (
     <header className='header flex items-center px-4 h-16 border-b border-b-bottomHeader'>
       <div className='topNavigation-content flex justify-between items-center w-full gap-8'>
@@ -16,7 +19,7 @@ const Header = () => {
           <ul className='flex items-center px-2'>
             {list.navHeader.navItemsLeft.map((navItem, index) => {
               return (
-                <li key={index} className=''>
+                <li key={index} className='relative'>
                   <a
                     href={navItem.href}
                     className='px-3 leading-[64px] text-small-bold active-nav-item flex items-center gap-2'
@@ -30,6 +33,7 @@ const Header = () => {
                       />
                     )}
                   </a>
+                  {navItem.isDropDown && <LibraryDropdown />}
                 </li>
               )
             })}
@@ -49,26 +53,28 @@ const Header = () => {
         </div>
         <div className='topNavigation-content-right'>
           <div className='flex gap-4'>
-            {list.navHeader.navItemsRight.map((navItem, index) => {
-              return (
-                <DropdownBtn
-                  key={index}
-                  image={navItem.icon}
-                  type={navItem.type}
-                  data={navItem.dropDown}
-                />
-              )
-            })}
-            <Button
-              content='Nâng cấp: Dùng thử miễn phí 7 ngày'
-              style={{
-                backgroundColor: '#ffcd1f',
-                color: '#282e3e',
-                fontWeight: '600',
-                fontSize: '14px',
-                padding: '8px 10px'
-              }}
-            />
+            {user &&
+              list.navHeader.navItemsRight.map((navItem, index) => {
+                return (
+                  <DropdownBtn
+                    key={index}
+                    image={navItem.icon}
+                    type={navItem.type}
+                    data={navItem.dropDown}
+                  />
+                )
+              })}
+            {user ? (
+              <Button
+                content='Nâng cấp: Dùng thử miễn phí 7 ngày'
+                btnType='yellow'
+              />
+            ) : (
+              <div className='flex gap-2'>
+                <Button content='Đăng ký' btnType='transparent' />
+                <Button content='Đăng nhập' btnType='secondary' />
+              </div>
+            )}
           </div>
         </div>
       </div>

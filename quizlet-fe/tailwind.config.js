@@ -17,7 +17,12 @@ module.exports = {
     colors: {
       primary: '#0a092d',
       secondary: '#4255ff',
-      bottomHeader: '#282e3e' // Color of the border bottom of the header
+      secondaryHover: '#423ed8',
+      bottomHeader: '#282e3e', // Color of the border bottom of the
+      yellow: '#ffcd1f',
+      yellowHover: '#ffdc62',
+      grayLight: '#f6f7fb',
+      black: '#282e3e'
     }
   }
 }

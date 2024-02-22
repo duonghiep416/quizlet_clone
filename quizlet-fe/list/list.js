@@ -9,7 +9,8 @@ const list = {
       {
         name: 'Thư viện của bạn',
         href: '',
-        icon: '/svg-export/arrow-down.svg'
+        icon: '/svg-export/arrow-down.svg',
+        isDropDown: true
       },
       {
         name: 'Lời giải chuyên gia',
