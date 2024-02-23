@@ -5,8 +5,13 @@ import Button from './Button'
 import DropdownBtn from './DropdownBtn'
 import LibraryDropdown from './LibraryDropdown'
 import { useSelector } from 'react-redux'
+import { useRouter } from 'next/navigation'
 const Header = () => {
   const user = useSelector((state) => state.user.userData)
+  const router = useRouter()
+  const redirectLoginPage = () => {
+    router.push('/auth/login')
+  }
   return (
     <header className='header flex items-center px-4 h-16 border-b border-b-bottomHeader'>
       <div className='topNavigation-content flex justify-between items-center w-full gap-8'>
@@ -71,8 +76,16 @@ const Header = () => {
               />
             ) : (
               <div className='flex gap-2'>
-                <Button content='Đăng ký' btnType='transparent' />
-                <Button content='Đăng nhập' btnType='secondary' />
+                <Button
+                  content='Đăng ký'
+                  btnType='transparent'
+                  onClick={redirectLoginPage}
+                />
+                <Button
+                  content='Đăng nhập'
+                  btnType='secondary'
+                  onClick={redirectLoginPage}
+                />
               </div>
             )}
           </div>

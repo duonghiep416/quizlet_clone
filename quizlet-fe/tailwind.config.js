@@ -11,7 +11,8 @@ module.exports = {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))'
+          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'login-thumb': "url('/images/auth/login-wal.png')"
       }
     },
     colors: {
@@ -22,7 +23,10 @@ module.exports = {
       yellow: '#ffcd1f',
       yellowHover: '#ffdc62',
       grayLight: '#f6f7fb',
-      black: '#282e3e'
+      black: '#282e3e',
+      white: '#ffffff',
+      gray: '#d9dde8',
+      'gray-600': '#586380'
     }
   }
 }

@@ -4,6 +4,8 @@ var express = require('express')
 var path = require('path')
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
+var compression = require('compression')
+var helmet = require('helmet')
 const passport = require('passport')
 const localPassport = require('./passports/local.passport')
 const googlePassport = require('./passports/google.passport')
@@ -20,6 +22,8 @@ var { User } = require('./models')
 //Library
 var session = require('express-session')
 var app = express()
+app.use(helmet())
+app.use(compression())
 app.use(cors())
 app.use(
   session({
