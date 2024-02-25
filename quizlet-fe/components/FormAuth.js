@@ -1,0 +1,124 @@
+'use client'
+import Input from './Input'
+import Button from './Button'
+import { useRouter } from 'next/navigation'
+import { checkInputLogin, checkInputRegister } from '@/utils/checkAuth.utils'
+import { useState } from 'react'
+const FormAuth = ({ type }) => {
+  const router = useRouter()
+  const messageInit = {
+    name: null,
+    email: null,
+    password: null,
+    confirmPassword: null
+  }
+  const [message, setMessage] = useState(messageInit)
+  return (
+    <form
+      action=''
+      className=''
+      onSubmit={async (e) => {
+        e.preventDefault()
+        const { name, email, password, confirmPassword } = e.target.elements
+        if (type === 'signup') {
+          const result = await checkInputRegister(
+            name.value,
+            email.value,
+            password.value,
+            confirmPassword.value
+          )
+          if (!result.status) {
+            setMessage({
+              ...messageInit,
+              ...result.errors
+            })
+          }
+        }
+        if (type === 'login') {
+          const result = await checkInputLogin(email.value, password.value)
+          if (!result.status) {
+            setMessage({
+              ...messageInit,
+              ...result.errors
+            })
+          }
+        }
+      }}
+    >
+      {type === 'signup' && (
+        <Input
+          label='Full Name'
+          placeholder='Enter your full name'
+          id='name'
+          isRequired={true}
+          message={message.name}
+        />
+      )}
+      <Input
+        label='Email'
+        placeholder='Enter your email address or username'
+        id='email'
+        isRequired={true}
+        message={message.email}
+      />
+      <Input
+        label='Password'
+        placeholder='Enter your password'
+        id='password'
+        type='password'
+        isForgotPassword={type === 'login'}
+        isRequired={true}
+        message={message.password}
+      />
+      {type === 'signup' && (
+        <>
+          <Input
+            label='Confirm Password'
+            placeholder='Enter your password'
+            id='confirmPassword'
+            type='password'
+            isRequired={true}
+            message={message.confirmPassword}
+          />
+          <Input
+            label='Avatar (optional)'
+            id='avatar'
+            type='file'
+            style={{
+              border: 'none',
+              padding: '0',
+              background: 'none',
+              margin: '0'
+            }}
+          />
+        </>
+      )}
+      <p>
+        By clicking Log in, you accept Quizlet's <span>Terms of Service</span>{' '}
+        and <span>Privacy Policy</span>
+      </p>
+      <Button
+        content={type === 'login' ? 'Log in' : 'Sign up'}
+        btnType='large-secondary'
+        style={{ fontSize: '17px' }}
+      />
+      <Button
+        content={
+          type === 'login'
+            ? 'New to Quizlet? Create an account'
+            : 'Already have an account? Log in'
+        }
+        onClick={() => {
+          type === 'login'
+            ? router.push('/auth/signup')
+            : router.push('/auth/login')
+        }}
+        btnType='large-transparent'
+        style={{ fontSize: '17px', marginTop: '20px' }}
+        type='button'
+      />
+    </form>
+  )
+}
+
+export default FormAuth

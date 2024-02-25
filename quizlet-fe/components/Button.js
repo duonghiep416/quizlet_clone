@@ -1,5 +1,5 @@
-const Button = ({ content, style, btnType, image, onClick }) => {
-  const type = {
+const Button = ({ content, style, btnType, image, onClick, type }) => {
+  const color = {
     primary: 'bg-primary text-white',
     secondary: 'bg-secondary text-white hover:bg-secondaryHover',
     yellow: 'bg-yellow text-black hover:bg-yellowHover',
@@ -13,8 +13,9 @@ const Button = ({ content, style, btnType, image, onClick }) => {
   return (
     <button
       style={style}
-      className={`rounded-lg px-3 py-2 text-sm font-semibold flex gap-2 items-center justify-center transition-all ${type[btnType]}`}
+      className={`rounded-lg px-3 py-2 text-sm font-semibold flex gap-2 items-center justify-center transition-all ${color[btnType]}`}
       onClick={onClick}
+      type={type || 'submit'}
     >
       {image && <img src={image} alt='icon' className='w-6 h-6' />}
       {content}
