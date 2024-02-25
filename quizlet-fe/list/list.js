@@ -73,7 +73,7 @@ const list = {
           {
             name: 'Đăng xuất',
             icon: null,
-            href: '#',
+            href: '/auth/logout',
             group: 2
           },
           {

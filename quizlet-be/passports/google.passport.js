@@ -29,6 +29,7 @@ module.exports = new GoogleStrategy(
       await User.create({
         name: profile.displayName,
         email,
+        avatar: profile.photos[0].value,
         password: null,
         status: true,
         provider_id: provider.id

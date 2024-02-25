@@ -16,10 +16,9 @@ router.post('/users', userController.store)
 router.patch('/users/:id', userController.update)
 router.delete('/users/:id', userController.delete)
 
-//
-
 // Auth routes
 router.post('/auth/login', authController.login)
+router.post('/auth/logout', authMiddleware, authController.logout)
 router.get('/auth/profile', authMiddleware, authController.profile)
 router.get('/auth/google/redirect', (req, res, next) => {
   const emptyResponse = new ServerResponse(req)
@@ -33,7 +32,6 @@ router.get('/auth/google/redirect', (req, res, next) => {
     }
   )(req, emptyResponse)
   const url = emptyResponse.getHeader('Location')
-  console.log('url', url)
   return res.status(200).json({
     status: 200,
     message: 'Success',
@@ -46,7 +44,6 @@ router.get(
     session: false
   }),
   async (req, res) => {
-    console.log(req.user)
     const user = await User.findOne({
       where: { email: req.user.emails[0].value }
     })

@@ -13,5 +13,9 @@ export default function Home() {
     checkLogin(process.env.NEXT_PUBLIC_API, dispatch, setUser, removeUser)
   }, [dispatch])
 
-  return <div></div>
+  return (
+    <main className='bg-primary'>
+      <Header />
+    </main>
+  )
 }

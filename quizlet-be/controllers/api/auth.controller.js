@@ -1,6 +1,6 @@
 var jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
-const { User } = require('../../models')
+const { User, BlacklistToken } = require('../../models')
 module.exports = {
   login: async (req, res) => {
     const { email, password } = req.body
@@ -50,6 +50,19 @@ module.exports = {
       }
     }
     res.status(response.status).json(response)
+  },
+  logout: async (req, res) => {
+    const bearer = req.get('Authorization')
+    const token = bearer.replace('Bearer', '').trim()
+    await BlacklistToken.findOrCreate({
+      where: {
+        token
+      }
+    })
+    res.json({
+      status: 200,
+      message: 'Success'
+    })
   },
   profile: async (req, res) => {
     res.json({

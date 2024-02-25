@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 
 const DropdownBtn = ({ image, type, data }) => {
+  const user = useSelector((state) => state.user.userData)
   const typeBtn = {
     add: {
       bgColor: '#4255ff'
@@ -49,7 +51,7 @@ const DropdownBtn = ({ image, type, data }) => {
         onClick={toggleDropdown}
       >
         {type === 'profile' ? (
-          <img src={image} alt='Action Icon' className='w-full h-full' />
+          <img src={user.avatar} alt='Action Icon' className='w-full h-full' />
         ) : (
           <img src={image} alt='Action Icon' className='w-6 h-6' />
         )}
