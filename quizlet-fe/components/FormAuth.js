@@ -6,6 +6,7 @@ import { checkInputLogin, checkInputRegister } from '@/utils/checkAuth.utils'
 import { useState } from 'react'
 import { handleAuth } from '@/utils/handleAuth.utils'
 import { avatars } from '@/public/images/avatar-default/avatar'
+import Cookies from 'js-cookie'
 const FormAuth = ({ type }) => {
   const router = useRouter()
   const messageInit = {
@@ -71,7 +72,7 @@ const FormAuth = ({ type }) => {
               'login'
             )
             if (response.status === 200) {
-              localStorage.setItem('accessToken', response.access_token)
+              Cookies.set('accessToken', response.access_token, { expires: 30 })
               router.push('/')
             } else {
               setError(response.error)

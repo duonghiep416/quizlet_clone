@@ -1,9 +1,9 @@
 'use client'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import Cookies from 'js-cookie'
 const Home = (request) => {
   const router = useRouter()
-  // const [dataInit, setDataInit] = useState({ status: null })
   const path = new URLSearchParams(request.searchParams).toString()
   useEffect(() => {
     const fetchData = async () => {
@@ -12,7 +12,7 @@ const Home = (request) => {
       )
       const data = await result.json()
       if (data.status === 200) {
-        localStorage.setItem('accessToken', data.access_token)
+        Cookies.set('accessToken', data.access_token, { expires: 30 })
         router.push('/')
       }
     }

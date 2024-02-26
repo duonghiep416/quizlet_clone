@@ -1,36 +1,11 @@
 'use client'
-import { useState, useEffect, CSSProperties } from 'react'
 import Button from '@/components/Button'
-import { userSlice } from '@/redux/slice/userSlice'
-import { checkLogin } from '@/utils/checkLogin.utils'
 import { useRouter } from 'next/navigation'
-import { useDispatch, useSelector } from 'react-redux'
-import Loading from '@/components/Loading'
 import FormAuth from '@/components/FormAuth'
-
-const { setUser, removeUser } = userSlice.actions
 
 const UserAuthenticationPage = ({ type, params }) => {
   const router = useRouter()
   const { action } = params
-  const user = useSelector((state) => state.user.userData)
-  const [isLoading, setIsLoading] = useState(true)
-  const dispatch = useDispatch()
-  useEffect(() => {
-    checkLogin(process.env.NEXT_PUBLIC_API, dispatch, setUser, removeUser).then(
-      () => setIsLoading(false)
-    )
-  }, [dispatch])
-
-  useEffect(() => {
-    if (user) {
-      router.push('/')
-    }
-  }, [user])
-
-  if (isLoading) {
-    return <Loading isLoading={isLoading} />
-  }
   return (
     <div className='auth-container flex h-screen bg-white'>
       <div className='left-side h-full relative bg-login-thumb w-[50%] bg-cover bg-right'>

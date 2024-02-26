@@ -61,7 +61,7 @@ const list = {
           {
             name: 'Hồ sơ',
             icon: '/svg-export/profile.svg',
-            href: '#',
+            href: '/profile',
             group: 1
           },
           {
