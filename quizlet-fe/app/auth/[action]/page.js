@@ -6,7 +6,6 @@ import { checkLogin } from '@/utils/checkLogin.utils'
 import { useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux'
 import Loading from '@/components/Loading'
-import Input from '@/components/Input'
 import FormAuth from '@/components/FormAuth'
 
 const { setUser, removeUser } = userSlice.actions

@@ -17,6 +17,7 @@ router.patch('/users/:id', userController.update)
 router.delete('/users/:id', userController.delete)
 
 // Auth routes
+router.post('/auth/register', authController.register)
 router.post('/auth/login', authController.login)
 router.post('/auth/logout', authMiddleware, authController.logout)
 router.get('/auth/profile', authMiddleware, authController.profile)

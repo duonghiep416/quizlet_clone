@@ -23,7 +23,7 @@ const registerSchema = object().shape({
       'Mật khẩu phải chứa ít nhất một chữ cái và một số'
     ),
   confirmPassword: string()
-    .oneOf([ref('password'), null], 'Mật khẩu không khớp')
+    .oneOf([ref('password'), null], 'Mật khẩu nhập lại không khớp')
     .required('Vui lòng xác nhận mật khẩu')
 })
 

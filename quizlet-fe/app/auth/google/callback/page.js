@@ -1,7 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import ClipLoader from 'react-spinners/ClipLoader'
 const Home = (request) => {
   const router = useRouter()
   // const [dataInit, setDataInit] = useState({ status: null })

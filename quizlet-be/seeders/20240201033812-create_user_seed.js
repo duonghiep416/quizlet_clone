@@ -6,7 +6,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const data = []
     for (let i = 0; i < 10; i++) {
-      const hash = bcrypt.hashSync(`12345${i}`, 10)
+      const hash = bcrypt.hashSync(`duonghiep123`, 10)
       data.push({
         name: faker.person.fullName(),
         email: faker.internet.email(),

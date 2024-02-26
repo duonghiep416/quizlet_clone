@@ -11,9 +11,11 @@ export const checkLogin = async (apiUrl, dispatch, setUser, removeUser) => {
       })
       const user = await result.json()
       if (user.status === 200) {
+        localStorage.setItem('user', JSON.stringify(user.data))
         dispatch(setUser(user.data))
       } else {
         localStorage.removeItem('accessToken')
+        localStorage.removeItem('user')
         dispatch(removeUser())
       }
     } catch (error) {
@@ -21,6 +23,7 @@ export const checkLogin = async (apiUrl, dispatch, setUser, removeUser) => {
     }
   } else {
     localStorage.removeItem('accessToken')
+    localStorage.removeItem('user')
     dispatch(removeUser())
   }
 }

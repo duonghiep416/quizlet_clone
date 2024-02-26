@@ -38,6 +38,7 @@ module.exports = async (req, res, next) => {
 
       return next()
     } catch (e) {
+      console.log(e)
       Object.assign(response, {
         status: 401,
         message: 'Unauthorized'
