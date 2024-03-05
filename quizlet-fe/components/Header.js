@@ -4,11 +4,19 @@ import SearchInput from './SearchInput'
 import Button from './Button'
 import DropdownBtn from './DropdownBtn'
 import LibraryDropdown from './LibraryDropdown'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
+import { getProfileUser } from '@/utils/getProfileUser.utils'
+import { userSlice } from '@/redux/slice/userSlice'
+import { useEffect } from 'react'
+const { setUser, removeUser } = userSlice.actions
 const Header = () => {
   const user = useSelector((state) => state.user.userData)
   const router = useRouter()
+  const dispatch = useDispatch()
+  useEffect(() => {
+    getProfileUser(process.env.NEXT_PUBLIC_API, dispatch, setUser, removeUser)
+  }, [dispatch])
   const redirectLoginPage = () => {
     router.push('/auth/login')
   }
@@ -38,7 +46,7 @@ const Header = () => {
                       />
                     )}
                   </a>
-                  {navItem.isDropDown && <LibraryDropdown />}
+                  {/* {navItem.isDropDown && <LibraryDropdown />} */}
                 </li>
               )
             })}

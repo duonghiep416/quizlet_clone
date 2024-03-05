@@ -51,7 +51,11 @@ const DropdownBtn = ({ image, type, data }) => {
         onClick={toggleDropdown}
       >
         {type === 'profile' ? (
-          <img src={user.avatar} alt='Action Icon' className='w-full h-full' />
+          <img
+            src={`${process.env.NEXT_PUBLIC_SERVER_URL}${user.avatar}`}
+            alt='Action Icon'
+            className='w-full h-full object-cover'
+          />
         ) : (
           <img src={image} alt='Action Icon' className='w-6 h-6' />
         )}

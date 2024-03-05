@@ -36,6 +36,9 @@ body {
   .active-nav-item {
     @apply relative px-3 leading-[64px] text-small-bold inline-block hover:after:absolute hover:after:left-3 hover:after:bottom-0 hover:after:right-3 hover:after:h-1 hover:after:bg-[#a8b1ff] hover:after:rounded-t-lg;
   }
+  .nav-active {
+    @apply after:absolute after:left-0 hover:after:right-3 after:bottom-[-2px] after:h-[2px] after:bg-secondary hover:text-white;
+  }
 }
 
 .dropdown-nav:hover .dropdown-nav-child {

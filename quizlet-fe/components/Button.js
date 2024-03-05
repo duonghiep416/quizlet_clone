@@ -1,6 +1,15 @@
-const Button = ({ content, style, btnType, image, onClick, type }) => {
+const Button = ({
+  content,
+  style,
+  btnType,
+  image,
+  onClick,
+  type,
+  as = 'button',
+  ...props
+}) => {
   const color = {
-    primary: 'bg-primary text-white',
+    primary: 'bg-primary text-white hover:bg-secondary',
     secondary: 'bg-secondary text-white hover:bg-secondaryHover',
     yellow: 'bg-yellow text-black hover:bg-yellowHover',
     transparent:
@@ -10,16 +19,18 @@ const Button = ({ content, style, btnType, image, onClick, type }) => {
     'large-secondary':
       'bg-secondary text-white hover:bg-secondaryHover flex items-center justify-center w-full h-14 border-none outline-none text-base'
   }
+  const As = as
   return (
-    <button
+    <As
       style={style}
-      className={`rounded-lg px-3 py-2 text-sm font-semibold flex gap-2 items-center justify-center transition-all ${color[btnType]}`}
+      className={`rounded-lg px-3 py-2 text-sm font-semibold flex gap-2 items-center justify-center transition-all ${color[btnType]} cursor-pointer`}
       onClick={onClick}
       type={type || 'submit'}
+      {...props}
     >
       {image && <img src={image} alt='icon' className='w-6 h-6' />}
       {content}
-    </button>
+    </As>
   )
 }
 

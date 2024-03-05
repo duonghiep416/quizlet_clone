@@ -3,7 +3,7 @@ export const getProfileUser = async (apiUrl, dispatch, setUser, removeUser) => {
   const accessToken = Cookies.get('accessToken')
   if (accessToken) {
     try {
-      const result = await fetch(`${apiUrl}/auth/profile`, {
+      const result = await fetch(`${apiUrl}/profile`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

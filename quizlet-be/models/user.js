@@ -24,6 +24,13 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Achievement, {
         foreignKey: 'user_id'
       })
+      // User.hasMany(models.userAvatar, {
+      //   foreignKey: 'user_id'
+      // })
+      User.belongsTo(models.Avatar, {
+        foreignKey: 'avatar_id',
+        as: 'avatar'
+      })
     }
   }
   User.init(
@@ -40,7 +47,8 @@ module.exports = (sequelize, DataTypes) => {
       provider_id: {
         type: DataTypes.INTEGER
       },
-      avatar: DataTypes.STRING,
+
+      avatar_id: DataTypes.INTEGER,
       created_at: DataTypes.DATE,
       updated_at: DataTypes.DATE
     },

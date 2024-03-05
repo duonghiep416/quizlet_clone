@@ -1,0 +1,3 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" class="UIIcon UIIcon--caret-down UIDropdown-icon" width="38"  height="38" ><defs><symbol id="caret-down" viewBox="0 0 24 24">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.14541 8.35535L12.0063 13.0691L16.8671 8.35535C17.3557 7.88155 18.145 7.88155 18.6336 8.35535C19.1221 8.82916 19.1221 9.59453 18.6336 10.0683L12.8832 15.6446C12.3946 16.1185 11.6054 16.1185 11.1168 15.6446L5.36644 10.0683C4.87785 9.59453 4.87785 8.82916 5.36644 8.35535C5.85503 7.8937 6.65682 7.88155 7.14541 8.35535Z"></path>
+</symbol></defs><noscript fill="#3CCFCF"></noscript><use xlink:href="#caret-down" fill="#3CCFCF"></use><noscript fill="#3CCFCF"></noscript></svg>

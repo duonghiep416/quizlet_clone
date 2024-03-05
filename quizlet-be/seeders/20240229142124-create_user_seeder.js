@@ -5,13 +5,14 @@ const { faker } = require('@faker-js/faker')
 module.exports = {
   async up(queryInterface, Sequelize) {
     const data = []
-    for (let i = 0; i < 10; i++) {
+    for (let i = 1; i < 11; i++) {
       const hash = bcrypt.hashSync(`duonghiep123`, 10)
       data.push({
         name: faker.person.fullName(),
         email: faker.internet.email(),
         password: hash,
         status: 'true',
+        avatar_id: i + 1,
         created_at: new Date(),
         updated_at: new Date()
       })

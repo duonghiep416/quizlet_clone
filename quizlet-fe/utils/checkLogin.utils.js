@@ -1,6 +1,6 @@
 export async function checkLogin(accessToken) {
   const apiUrl = process.env.NEXT_PUBLIC_API
-  const response = await fetch(`${apiUrl}/auth/profile`, {
+  const response = await fetch(`${apiUrl}/profile`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { checkInputLogin, checkInputRegister } from '@/utils/checkAuth.utils'
 import { useState } from 'react'
 import { handleAuth } from '@/utils/handleAuth.utils'
-import { avatars } from '@/public/images/avatar-default/avatar'
 import Cookies from 'js-cookie'
 const FormAuth = ({ type }) => {
   const router = useRouter()
@@ -43,10 +42,7 @@ const FormAuth = ({ type }) => {
               {
                 name: name.value,
                 email: email.value,
-                password: password.value,
-                avatar: `/images/avatar-default/${
-                  avatars[Math.floor(Math.random() * avatars.length)]
-                }`
+                password: password.value
               },
               'register'
             )

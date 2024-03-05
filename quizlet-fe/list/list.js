@@ -67,7 +67,7 @@ const list = {
           {
             name: 'Cài đặt',
             icon: '/svg-export/settings.svg',
-            href: '#',
+            href: '/settings',
             group: 1
           },
           {

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { User, BlacklistToken } = require('../../models/index')
+const { User, BlacklistToken, Avatar } = require('../../models/index')
 module.exports = async (req, res, next) => {
   const bearer = req.get('Authorization')
   const response = {}
@@ -22,7 +22,14 @@ module.exports = async (req, res, next) => {
           where: {
             id: userId,
             status: true
-          }
+          },
+          include: [
+            {
+              model: Avatar,
+              as: 'avatar',
+              attributes: ['image_url']
+            }
+          ]
         },
         {
           attributes: { exclude: 'password' }
@@ -31,14 +38,16 @@ module.exports = async (req, res, next) => {
       if (!user) {
         throw new Error('User Not Found')
       }
+      const newUser = {
+        ...user.dataValues,
+        avatar: user.dataValues.avatar.dataValues.image_url
+      }
       req.user = {
-        ...user,
+        ...newUser,
         accessToken: token
       }
-
       return next()
     } catch (e) {
-      console.log(e)
       Object.assign(response, {
         status: 401,
         message: 'Unauthorized'

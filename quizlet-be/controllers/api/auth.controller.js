@@ -1,6 +1,6 @@
 var jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
-const { User, BlacklistToken } = require('../../models')
+const { User, BlacklistToken, Avatar, UserAvatar } = require('../../models')
 module.exports = {
   login: async (req, res) => {
     const { email, password } = req.body
@@ -15,7 +15,14 @@ module.exports = {
       const user = await User.findOne({
         where: {
           email
-        }
+        },
+        include: [
+          {
+            model: Avatar,
+            as: 'avatar',
+            attributes: ['image_url']
+          }
+        ]
       })
       if (!user) {
         Object.assign(response, {
@@ -39,7 +46,12 @@ module.exports = {
           const token = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: process.env.JWT_EXPIRES_IN
           })
-          req.user = user
+          const newUser = {
+            ...user.dataValues,
+            avatar: user.dataValues.avatar.dataValues.image_url
+          }
+          req.user = newUser
+
           Object.assign(response, {
             status: 200,
             message: 'Success',
@@ -57,9 +69,9 @@ module.exports = {
     res.status(response.status).json(response)
   },
   register: async (req, res) => {
-    const { name, email, password, avatar } = req.body
+    const { name, email, password } = req.body
     const response = {}
-    if (!name || !email || !password || !avatar) {
+    if (!name || !email || !password) {
       Object.assign(response, {
         status: 400,
         error: 'Name, email and password are required',
@@ -79,13 +91,23 @@ module.exports = {
         })
       } else {
         const hash = bcrypt.hashSync(password, 10)
+        const userAvatarDataCreate = []
+
         const newUser = await User.create({
           name,
           email,
           status: true,
           password: hash,
-          avatar
+          avatar_id: 5
         })
+        for (let i = 2; i <= 11; i++) {
+          userAvatarDataCreate.push({
+            user_id: newUser.id,
+            avatar_id: i,
+            is_avatar: i === 5
+          })
+        }
+        await UserAvatar.bulkCreate(userAvatarDataCreate)
         Object.assign(response, {
           status: 200,
           message: 'Success',
@@ -113,7 +135,7 @@ module.exports = {
       status: 200,
       message: 'Success',
       data: {
-        ...req.user.dataValues,
+        ...req.user,
         password: null
       }
     })

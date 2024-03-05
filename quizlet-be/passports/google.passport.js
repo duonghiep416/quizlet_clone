@@ -1,5 +1,8 @@
 const GoogleStrategy = require('passport-google-oauth20')
-const { User, Provider } = require('../models/index')
+const { User, Provider, Avatar, UserAvatar } = require('../models/index')
+const { getFileChecksum } = require('../utils/checkDuplicateFile.utils')
+const downloadImageAndSaveToLocal = require('../utils/downloadAndSaveImage')
+const fs = require('fs')
 module.exports = new GoogleStrategy(
   {
     clientID:
@@ -26,13 +29,36 @@ module.exports = new GoogleStrategy(
       }
     })
     if (!user) {
-      await User.create({
+      const path = await downloadImageAndSaveToLocal(
+        profile.photos[0].value,
+        './public/images/avatars/uploads'
+      )
+      const storedChecksum = getFileChecksum(path)
+      const [newAvatar, created] = await Avatar.findOrCreate({
+        where: {
+          checksum: storedChecksum
+        },
+        defaults: {
+          checksum: storedChecksum,
+          image_url: path.slice(path.indexOf('/images')),
+          type: 'google uploaded'
+        }
+      })
+      if (!created) {
+        fs.unlinkSync(path)
+      }
+      const newUser = await User.create({
         name: profile.displayName,
         email,
-        avatar: profile.photos[0].value,
         password: null,
         status: true,
-        provider_id: provider.id
+        provider_id: provider.id,
+        avatar_id: newAvatar.id
+      })
+      await UserAvatar.create({
+        user_id: newUser.id,
+        avatar_id: newAvatar.id,
+        is_avatar: true
       })
     } else if (user.provider_id === null) {
       return cb(null, false, {
@@ -43,3 +69,8 @@ module.exports = new GoogleStrategy(
     return cb(null, profile)
   }
 )
+/*
+- Người dùng đăng nhập bằng email
+ + Nếu chưa có user  -> Tải avatar user -> get checksum -> check xem có avatar nào trùng checksum không ? tạo mới UserAvatar, user : tạo mới avatar, Tạo mới user, userAvatar
+  
+*/

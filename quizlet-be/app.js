@@ -9,6 +9,7 @@ var helmet = require('helmet')
 const passport = require('passport')
 const localPassport = require('./passports/local.passport')
 const googlePassport = require('./passports/google.passport')
+
 //Router
 var indexRouter = require('./routes/index')
 var usersRouter = require('./routes/users')
@@ -16,15 +17,37 @@ var apiRouter = require('./routes/api')
 
 //Cors
 const cors = require('cors')
+const corsOptions = {
+  origin: 'http://localhost:3001', // Replace with your frontend's origin
+  credentials: true, // Allow cookies and authentication headers
+  optionSuccessStatus: 200 // Return 200 for preflight requests
+}
 //Model Database
 var { User } = require('./models')
+// CORP
 
 //Library
 var session = require('express-session')
 var app = express()
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With')
+  next()
+})
 app.use(helmet())
 app.use(compression())
-app.use(cors())
+app.use(cors(corsOptions))
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3001')
+  res.header('Access-Control-Allow-Headers', true)
+  res.header('Access-Control-Allow-Credentials', true)
+  res.header('Cross-Origin-Resource-Policy', 'cross-origin')
+  res.header(
+    'Access-Control-Allow-Methods',
+    'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+  )
+  next()
+})
 app.use(
   session({
     secret: 'duonghiep',
@@ -79,8 +102,8 @@ app.use(function (err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {}
 
   // render the error page
-  res.status(err.status || 500)
-  res.render('error')
+
+  res.status(err.status || 500).json({ error: err.message, status: err.status })
 })
 
 module.exports = app
