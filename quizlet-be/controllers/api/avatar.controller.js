@@ -58,7 +58,8 @@ module.exports = {
       const userId = req.user.id
       const userAvatar = await UserAvatar.findOne({
         where: {
-          avatar_id: avatar.id
+          avatar_id: avatar.id,
+          user_id: userId
         }
       })
       if (userAvatar) {
