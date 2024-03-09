@@ -10,7 +10,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Course.belongsTo(models.Category, { foreignKey: 'category_id' })
-      Course.hasMany(models.Flashcard, { foreignKey: 'course_id' })
+      Course.hasMany(models.Flashcard, {
+        foreignKey: 'course_id',
+        as: 'flashcards'
+      })
     }
   }
   Course.init(
@@ -21,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER
       },
       name: DataTypes.STRING,
+      description: DataTypes.STRING,
       user_id: DataTypes.INTEGER,
       category_id: DataTypes.INTEGER,
       is_public: DataTypes.BOOLEAN,

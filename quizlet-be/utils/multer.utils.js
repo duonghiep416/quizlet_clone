@@ -1,21 +1,15 @@
 const multer = require('multer')
+const { uploadAvatar: avatarConfig } = require('../config/uploadFile.config')
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'public/images/avatars/uploads/')
+    cb(null, avatarConfig.destination)
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
-    cb(
-      null,
-      (file.fieldname + '-' + uniqueSuffix + '-' + file.originalname).replace(
-        ' ',
-        '-'
-      )
-    )
+    cb(null, avatarConfig.name(file.mimetype))
   }
 })
 function fileFilter(req, file, cb) {
-  const allowedTypes = ['image/jpeg', 'image/png'] // Danh sách các định dạng được phép
+  const allowedTypes = avatarConfig.allowedTypes // Danh sách các định dạng được phép
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true) // Cho phép upload
   } else {
@@ -29,7 +23,7 @@ const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
   limits: {
-    fileSize: 1024 * 1024 * 2 // 2MB
+    fileSize: avatarConfig.fileSize
   }
 })
 module.exports = {
@@ -47,7 +41,6 @@ module.exports = {
           .status(400)
           .json({ error: 'Lỗi xử lý file', message: err.message })
       }
-      // Nếu không có lỗi, tiếp tục middleware tiếp theo
       next()
     })
   }

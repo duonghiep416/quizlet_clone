@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       back_content: DataTypes.STRING,
       user_id: DataTypes.INTEGER,
       course_id: DataTypes.INTEGER,
+      order: DataTypes.INTEGER,
       created_at: DataTypes.DATE,
       updated_at: DataTypes.DATE
     },

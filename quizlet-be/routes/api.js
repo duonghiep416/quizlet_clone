@@ -93,9 +93,8 @@ router.patch(
 
 // Courses - Sets of flashcards
 router.get('/courses', authMiddleware, courseController.getCourses)
+router.get('/courses/:id', authMiddleware, courseController.getCourse)
 router.post('/course', authMiddleware, courseController.postCourse)
-
-// Flashcards
-// Get flashcards of user
-// router.get('/flashcards', authMiddleware, flashcardController.getFlashcards)
+router.patch('/courses/:id', authMiddleware, courseController.updateCourse)
+router.delete('/courses/:id', authMiddleware, courseController.deleteCourse)
 module.exports = router
