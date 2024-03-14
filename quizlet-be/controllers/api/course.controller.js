@@ -1,6 +1,11 @@
 const { Op } = require('sequelize')
-const { Course, Flashcard } = require('../../models')
+const { Course, Flashcard, Category } = require('../../models')
 const courseConfig = require('../../config/course.config')
+const { getCategory } = require('../../controllers/api/category.controller')
+const {
+  generate: genPassHash,
+  compare: comparePass
+} = require('../../utils/passwordHash')
 module.exports = {
   getCourses: async (req, res) => {
     const { id: userId } = req.user
@@ -26,6 +31,14 @@ module.exports = {
       limit,
       offset
     })
+    courses.rows.forEach((course) => {
+      if (course.password) {
+        course.password = true
+      } else {
+        course.password = false
+      }
+      delete course.dataValues.user_id
+    })
     const { rows, count } = courses
     const totalPage = Math.ceil(count / limit)
     Object.assign(response, {
@@ -36,21 +49,18 @@ module.exports = {
     })
     res.status(response.status).json(response)
   },
-  getCourse: async (req, res) => {
-    const { id: userId } = req.user
+  getCourse: async (req, res, next, checked = false) => {
     const { id } = req.params
     const response = {}
     const course = await Course.findOne({
       where: {
-        id,
-        user_id: userId
+        id
       },
       include: [
         {
           model: Flashcard,
           as: 'flashcards',
           where: {
-            user_id: userId,
             course_id: id
           },
           separate: true,
@@ -59,14 +69,38 @@ module.exports = {
         }
       ]
     })
-    if (!course) {
+    if (!course && !checked) {
       Object.assign(response, {
         status: 404,
         message: 'Not found'
       })
       return res.status(response.status).json(response)
     }
+    if (
+      !course.is_public &&
+      course.password &&
+      !checked &&
+      req.user.id !== course.user_id
+    ) {
+      Object.assign(response, {
+        status: 401,
+        message: 'Unauthorized',
+        isPassword: true
+      })
+      return res.status(response.status).json(response)
+    }
+    if (!course.is_public && !course.password && !checked) {
+      if (req.user.id !== course.user_id) {
+        Object.assign(response, {
+          status: 401,
+          message: 'Unauthorized',
+          isPassword: false
+        })
+        return res.status(response.status).json(response)
+      }
+    }
     delete course.dataValues.user_id
+    delete course.dataValues.password
     Object.assign(response, {
       status: 200,
       message: 'Success',
@@ -74,54 +108,147 @@ module.exports = {
     })
     res.status(response.status).json(response)
   },
+  checkPassword: async (req, res, next) => {
+    const { id } = req.params
+    const { type, password } = req.body
+    const response = {}
+    try {
+      if (
+        Object.keys(req.body).length === 0 ||
+        (type !== 'course' && type !== 'category') ||
+        !password ||
+        !type
+      ) {
+        Object.assign(response, {
+          status: 400,
+          message: 'Invalid type'
+        })
+        return res.status(response.status).json(response)
+      }
+      const model = type === 'course' ? Course : Category
+      const data = await model.findOne({
+        where: {
+          id
+        }
+      })
+      if (!data) {
+        Object.assign(response, {
+          status: 404,
+          message: 'Not found'
+        })
+        return res.status(response.status).json(response)
+      }
+      if (data.password) {
+        const result = comparePass(password, data.password)
+        if (!result) {
+          Object.assign(response, {
+            status: 401,
+            message: 'Sai mật khẩu'
+          })
+          return res.status(response.status).json(response)
+        }
+        if (result) {
+          if (type === 'course') {
+            module.exports.getCourse(req, res, next, true)
+          }
+          if (type === 'category') {
+            getCategory(req, res, next, true)
+          }
+        }
+      } else {
+        Object.assign(response, {
+          status: 404,
+          message: 'Not found'
+        })
+        return res.status(response.status).json(response)
+      }
+    } catch (error) {
+      console.log(error)
+      Object.assign(response, {
+        status: 500,
+        message: 'Internal server error'
+      })
+      return res.status(response.status).json(response)
+    }
+  },
+
   postCourse: async (req, res) => {
     const {
       name,
       is_public,
       description = null,
       category_id = null,
+      password = null,
       flashcards = []
     } = req.body
     const { id } = req.user
     const response = {}
-    const newCourse = await Course.create({
-      name,
-      is_public,
-      description,
-      user_id: id,
-      category_id
-    })
-    flashcards.forEach((flashcard, index) => {
-      if (!flashcard.front_content || !flashcard.back_content) {
-        Object.assign(response, {
-          status: 400,
-          message: 'Invalid body'
-        })
-        return res.status(response.status).json(response)
-      }
-      flashcard.user_id = id
-      flashcard.course_id = newCourse.id
-      flashcard.order = index + 1
-    })
-    const newFlashcards = await Flashcard.bulkCreate(flashcards)
-    delete newCourse.dataValues.user_id
-    newFlashcards.forEach((newFlashcard) => {
-      delete newFlashcard.dataValues.course_id
-      delete newFlashcard.dataValues.user_id
-      delete newFlashcard.dataValues.created_at
-      delete newFlashcard.dataValues.updated_at
-      delete newFlashcard.dataValues.id
-    })
-    Object.assign(response, {
-      status: 200,
-      message: 'Success',
-      data: {
-        course: {
-          ...newCourse.dataValues,
-          flashcards: newFlashcards
+    if (Object.keys(req.body).length === 0) {
+      Object.assign(response, {
+        status: 400,
+        message: 'Invalid body'
+      })
+      return res.status(response.status).json(response)
+    }
+    if (is_public && password) {
+      Object.assign(response, {
+        status: 400,
+        message: 'Invalid body'
+      })
+      return res.status(response.status).json(response)
+    }
+    const passwordHash = password ? genPassHash(password) : null
+    try {
+      const newCourse = await Course.create({
+        name,
+        is_public,
+        description,
+        user_id: id,
+        password: passwordHash,
+        category_id
+      })
+      flashcards.forEach((flashcard, index) => {
+        if (!flashcard.front_content || !flashcard.back_content) {
+          Object.assign(response, {
+            status: 400,
+            message: 'Invalid body'
+          })
+          return res.status(response.status).json(response)
         }
+        flashcard.user_id = id
+        flashcard.course_id = newCourse.id
+        flashcard.order = index + 1
+      })
+      const newFlashcards = await Flashcard.bulkCreate(flashcards)
+      delete newCourse.dataValues.user_id
+      if (newCourse.dataValues.password) {
+        newCourse.dataValues.password = true
+      } else {
+        newCourse.dataValues.password = false
       }
-    })
+      newFlashcards.forEach((newFlashcard) => {
+        delete newFlashcard.dataValues.course_id
+        delete newFlashcard.dataValues.user_id
+        delete newFlashcard.dataValues.created_at
+        delete newFlashcard.dataValues.updated_at
+        delete newFlashcard.dataValues.id
+      })
+      Object.assign(response, {
+        status: 200,
+        message: 'Success',
+        data: {
+          course: {
+            ...newCourse.dataValues,
+            flashcards: newFlashcards
+          }
+        }
+      })
+    } catch (error) {
+      Object.assign(response, {
+        status: 500,
+        message: 'Internal server error'
+      })
+    }
     res.status(response.status).json(response)
   },
   updateCourse: async (req, res) => {
@@ -129,6 +256,13 @@ module.exports = {
     const { id } = req.params
     const { name, is_public, category_id = null, flashcards = [] } = req.body
     const response = {}
+    if (Object.keys(req.body).length === 0) {
+      Object.assign(response, {
+        status: 400,
+        message: 'Invalid body'
+      })
+      return res.status(response.status).json(response)
+    }
     const updateFlashcards = []
     const createFlashcards = []
     const deleteFlashcards = []

@@ -10,7 +10,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Category.belongsTo(models.User, { foreignKey: 'user_id' })
-      Category.hasMany(models.Course, { foreignKey: 'category_id' })
+      Category.hasMany(models.Course, {
+        foreignKey: 'category_id',
+        as: 'courses'
+      })
     }
   }
   Category.init(
@@ -23,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       name: DataTypes.STRING,
       user_id: DataTypes.INTEGER,
       is_public: DataTypes.BOOLEAN,
+      password: DataTypes.STRING,
       created_at: DataTypes.DATE,
       updated_at: DataTypes.DATE
     },

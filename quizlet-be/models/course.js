@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       user_id: DataTypes.INTEGER,
       category_id: DataTypes.INTEGER,
       is_public: DataTypes.BOOLEAN,
+      password: DataTypes.STRING,
       created_at: DataTypes.DATE,
       updated_at: DataTypes.DATE
     },

@@ -4,6 +4,7 @@ const userController = require('../controllers/api/user.controller')
 const authController = require('../controllers/api/auth.controller')
 const courseController = require('../controllers/api/course.controller')
 const avatarController = require('../controllers/api/avatar.controller')
+const categoryController = require('../controllers/api/category.controller')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const { ServerResponse } = require('http')
@@ -97,4 +98,17 @@ router.get('/courses/:id', authMiddleware, courseController.getCourse)
 router.post('/course', authMiddleware, courseController.postCourse)
 router.patch('/courses/:id', authMiddleware, courseController.updateCourse)
 router.delete('/courses/:id', authMiddleware, courseController.deleteCourse)
+
+// Categories
+router.get('/categories', authMiddleware, categoryController.getCategories)
+router.get('/categories/:id', authMiddleware, categoryController.getCategory)
+router.post('/category', authMiddleware, categoryController.postCategory)
+
+// Check password courses, categories
+router.post(
+  '/check-password/:id',
+  authMiddleware,
+  courseController.checkPassword
+)
+
 module.exports = router
