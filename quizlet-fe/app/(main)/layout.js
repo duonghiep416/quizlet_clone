@@ -1,6 +1,4 @@
 import Header from '@/components/Header'
-import Providers from '@/redux/Providers'
-
 export const metadata = {
   title: 'Quizlet',
   description:
@@ -11,7 +9,7 @@ export default function MainLayout({ children }) {
   return (
     <main className='bg-primary'>
       <Header />
-      {children}
+      <div className='container w-2/3 mx-auto py-10'>{children}</div>
     </main>
   )
 }

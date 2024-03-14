@@ -8,13 +8,13 @@ const list = {
       },
       {
         name: 'Thư viện của bạn',
-        href: '',
+        href: null,
         icon: '/svg-export/arrow-down.svg',
         isDropDown: true
       },
       {
         name: 'Lời giải chuyên gia',
-        href: '',
+        href: '/',
         icon: null
       }
     ],

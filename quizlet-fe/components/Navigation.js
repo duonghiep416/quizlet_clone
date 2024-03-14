@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const Navigation = () => {
@@ -18,14 +19,14 @@ const Navigation = () => {
           {list.map((item, index) => {
             return (
               <li key={index}>
-                <a
+                <Link
                   href={item.path}
                   className={`relative inline-block leading-loose pr-3 py-1 nav-active ${
                     pathname === item.path ? 'text-white after:right-3' : ''
                   }`}
                 >
                   {item.name}
-                </a>
+                </Link>
               </li>
             )
           })}

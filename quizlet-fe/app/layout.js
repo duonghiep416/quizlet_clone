@@ -1,5 +1,5 @@
 import './globals.css'
-import Providers from '@/redux/Providers'
+import Providers from '@/components/Providers'
 // const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {

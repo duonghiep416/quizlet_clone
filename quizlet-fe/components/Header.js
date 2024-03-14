@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
 import { getProfileUser } from '@/utils/getProfileUser.utils'
 import { userSlice } from '@/redux/slice/userSlice'
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 const { setUser, removeUser } = userSlice.actions
 const Header = () => {
   const user = useSelector((state) => state.user.userData)
@@ -20,6 +20,32 @@ const Header = () => {
   const redirectLoginPage = () => {
     router.push('/auth/login')
   }
+
+  // Dropdown
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const dropdownRef = useRef(null)
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen)
+  }
+
+  const handleClickOutside = (event) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target) &&
+      !event.target.closest('.relative')
+    ) {
+      setIsDropdownOpen(false)
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
   return (
     <header className='header flex items-center px-4 h-16 border-b border-b-bottomHeader'>
       <div className='topNavigation-content flex justify-between items-center w-full gap-8'>
@@ -32,9 +58,14 @@ const Header = () => {
           <ul className='flex items-center px-2'>
             {list.navHeader.navItemsLeft.map((navItem, index) => {
               return (
-                <li key={index} className='relative'>
+                <li
+                  key={index}
+                  className='relative'
+                  ref={navItem.isDropDown ? dropdownRef : null}
+                  onClick={toggleDropdown}
+                >
                   <a
-                    href={navItem.href}
+                    href={navItem.isDropDown ? '#' : navItem.href}
                     className='px-3 leading-[64px] text-small-bold active-nav-item flex items-center gap-2'
                   >
                     {navItem.name}
@@ -46,7 +77,7 @@ const Header = () => {
                       />
                     )}
                   </a>
-                  {/* {navItem.isDropDown && <LibraryDropdown />} */}
+                  {isDropdownOpen && navItem.isDropDown && <LibraryDropdown />}
                 </li>
               )
             })}
