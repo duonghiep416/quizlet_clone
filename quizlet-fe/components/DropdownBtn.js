@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React, { useState, useRef, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
@@ -79,7 +80,7 @@ const DropdownBtn = ({ image, type, data }) => {
                       }`
                     }}
                   >
-                    <a
+                    <Link
                       href={item.href}
                       className='px-6 py-2 font-semibold text-base hover:bg-bottomHeader hover:text-white flex items-center gap-2'
                     >
@@ -92,7 +93,7 @@ const DropdownBtn = ({ image, type, data }) => {
                         />
                       )}
                       {item.name}
-                    </a>
+                    </Link>
                   </li>
                 )
               })}

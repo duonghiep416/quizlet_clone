@@ -4,6 +4,7 @@ import Cookies from 'js-cookie'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Tooltip, Skeleton } from '@nextui-org/react'
+import Link from 'next/link'
 const LibraryDropdown = () => {
   const accessToken = Cookies.get('accessToken')
   const user = useSelector((state) => state.user.userData)
@@ -83,7 +84,7 @@ const LibraryDropdown = () => {
                 key={index}
               >
                 <li className='hover:bg-bottomHeader'>
-                  <a
+                  <Link
                     href={`/detail/${page === 'courses' ? 'sets' : 'folders'}/${
                       item.id
                     }`}
@@ -98,19 +99,19 @@ const LibraryDropdown = () => {
                       />
                       <p className=' text-xs text-[#bbbbbb]'>{user?.name}</p>
                     </div>
-                  </a>
+                  </Link>
                 </li>
               </Tooltip>
             )
           })}
       </ul>
       <div>
-        <a
+        <Link
           href={`/profile/${page === 'courses' ? 'sets' : 'folders'}`}
           className='text-sm font-semibold flex flex-col w-full h-full justify-center gap-2 px-3 py-3 hover:bg-bottomHeader border-t border-[#313131] text-secondary hover:text-white'
         >
           Xem tất cả {page === 'courses' ? 'học phần' : 'thư mục'}
-        </a>
+        </Link>
       </div>
     </div>
   )

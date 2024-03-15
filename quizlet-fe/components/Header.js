@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import { getProfileUser } from '@/utils/getProfileUser.utils'
 import { userSlice } from '@/redux/slice/userSlice'
 import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 const { setUser, removeUser } = userSlice.actions
 const Header = () => {
   const user = useSelector((state) => state.user.userData)
@@ -50,11 +51,11 @@ const Header = () => {
     <header className='header flex items-center px-4 h-16 border-b border-b-bottomHeader'>
       <div className='topNavigation-content flex justify-between items-center w-full gap-8'>
         <div className='topNavigation-content-left h-full flex'>
-          <a href='' className='px-3'>
+          <Link href='' className='px-3'>
             <div className='logo h-full flex items-center'>
               <img src='/svg-export/logo.svg' alt='' />
             </div>
-          </a>
+          </Link>
           <ul className='flex items-center px-2'>
             {list.navHeader.navItemsLeft.map((navItem, index) => {
               return (
@@ -64,7 +65,7 @@ const Header = () => {
                   ref={navItem.isDropDown ? dropdownRef : null}
                   onClick={toggleDropdown}
                 >
-                  <a
+                  <Link
                     href={navItem.isDropDown ? '#' : navItem.href}
                     className='px-3 leading-[64px] text-small-bold active-nav-item flex items-center gap-2'
                   >
@@ -76,7 +77,7 @@ const Header = () => {
                         width={16}
                       />
                     )}
-                  </a>
+                  </Link>
                   {isDropdownOpen && navItem.isDropDown && <LibraryDropdown />}
                 </li>
               )

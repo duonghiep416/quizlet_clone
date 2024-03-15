@@ -13,7 +13,10 @@ import {
   Input,
   Link
 } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import Carousel from '@/components/DetailSetPage/Carousel'
+import Head from 'next/head'
+import HeadingPage from '@/components/DetailSetPage/HeadingPage'
 const DetailSetPage = ({ params }) => {
   const accessToken = Cookies.get('accessToken')
   const { id } = params
@@ -24,6 +27,7 @@ const DetailSetPage = ({ params }) => {
   })
   const [newData, setNewData] = useState(null)
   const [password, setPassword] = useState('')
+  const [cards, setCards] = useState({})
   const { isPending, error, data } = useQuery({
     queryKey: ['set'],
     queryFn: async () => {
@@ -37,6 +41,16 @@ const DetailSetPage = ({ params }) => {
         }
       ).then((res) => res.json())
       if (response.status === 200) {
+        const flashcards = response.data.flashcards.sort(
+          (a, b) => a.order - b.order
+        )
+        response.flashcards = flashcards
+        const fronts = flashcards.map((card) => card.front_content)
+        const backs = flashcards.map((card) => card.back_content)
+        setCards({
+          fronts,
+          backs
+        })
         setNewData(response)
       }
       return response
@@ -57,6 +71,16 @@ const DetailSetPage = ({ params }) => {
         }
       ).then((res) => res.json())
       if (response.status === 200) {
+        const flashcards = response.data.flashcards.sort(
+          (a, b) => a.order - b.order
+        )
+        response.flashcards = flashcards
+        const fronts = flashcards.map((card) => card.front_content)
+        const backs = flashcards.map((card) => card.back_content)
+        setCards({
+          fronts,
+          backs
+        })
         setNewData(response)
       } else {
         setPasswordStatus({ isInvalid: true, message: response.message })
@@ -65,15 +89,18 @@ const DetailSetPage = ({ params }) => {
       console.error('Error confirming password:', error)
     }
   }
+  useEffect(() => {
+    if (newData)
+      document.title = `Thẻ ghi nhớ: ${newData?.data?.name} | Quizlet`
+  }, [newData])
   return (
-    <>
-      {newData &&
-        newData.data?.flashcards.map((flashcards) => (
-          <div className='' key={flashcards.id}>
-            <p>{flashcards.front_content}</p>
-            <p>{flashcards.back_content}</p>
-          </div>
-        ))}
+    <div className='max-w-[61%]'>
+      {newData && (
+        <>
+          <HeadingPage title={newData?.data.name} />
+          <Carousel slides={cards?.fronts} backs={cards?.backs} />
+        </>
+      )}
       {data?.status === 404 && !newData && <p>Not found</p>}
       {data?.status === 401 && !newData && data?.isPassword && (
         <>
@@ -115,7 +142,7 @@ const DetailSetPage = ({ params }) => {
           </Modal>
         </>
       )}
-    </>
+    </div>
   )
 }
 

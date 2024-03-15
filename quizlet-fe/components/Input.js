@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 const Input = ({
   label,
   id,
@@ -14,9 +16,9 @@ const Input = ({
       <div className='row flex justify-between'>
         <label htmlFor={id}>{label}</label>
         {isForgotPassword && (
-          <a href='#' className='text-secondary'>
+          <Link href='#' className='text-secondary'>
             Forgot password
-          </a>
+          </Link>
         )}
       </div>
       <input
