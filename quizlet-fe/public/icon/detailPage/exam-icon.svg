@@ -1,0 +1,6 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" class="AssemblyIcon AssemblyIcon--large" role="presentation" width="64"  height="64" ><defs><symbol fill="none" id="study-test-twilight" viewBox="0 0 32 32">
+<path d="M8.67554 6.37019C8.67554 5.06107 9.78985 3.99982 11.1644 3.99982H19.6433C20.3216 3.99982 20.9706 4.2635 21.44 4.72987L26.65 9.90607C27.0942 10.3474 27.3422 10.9351 27.3422 11.5464V22.9628C27.3422 24.2719 26.2279 25.3332 24.8533 25.3332H11.1644C9.78985 25.3332 8.67554 24.2719 8.67554 22.9628V6.37019Z" fill="#7583FF"></path>
+<path d="M4.72437 9.04041C4.72437 7.73129 5.83868 6.67004 7.21325 6.67004H15.6921C16.3705 6.67004 17.0194 6.93373 17.4888 7.4001L22.6988 12.5763C23.143 13.0176 23.391 13.6053 23.391 14.2166V25.633C23.391 26.9421 22.2767 28.0034 20.9021 28.0034H7.21325C5.83868 28.0034 4.72437 26.9421 4.72437 25.633V9.04041Z" fill="#4255FF"></path>
+<rect x="7.21289" y="16.1515" width="9.95556" height="2.37037" rx="1.18519" fill="#FFFFFF"></rect>
+<rect x="7.21289" y="20.8923" width="7.46667" height="2.37037" rx="1.18519" fill="#FFFFFF"></rect>
+</symbol></defs><noscript fill="#F6F7FB"></noscript><use xlink:href="#study-test-twilight" fill="#F6F7FB"></use><noscript fill="#F6F7FB"></noscript></svg>

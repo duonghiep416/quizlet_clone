@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Tooltip, Skeleton } from '@nextui-org/react'
 import Link from 'next/link'
-const LibraryDropdown = () => {
+const LibraryDropdown = ({ setIsDropdownOpen }) => {
   const accessToken = Cookies.get('accessToken')
   const user = useSelector((state) => state.user.userData)
   const [page, setPage] = useState('courses')
@@ -89,6 +89,9 @@ const LibraryDropdown = () => {
                       item.id
                     }`}
                     className='text-base font-bold flex flex-col w-full h-full justify-center gap-2 px-4 py-3 hover:bg-bottomHeader'
+                    onClick={() => {
+                      setIsDropdownOpen(false)
+                    }}
                   >
                     <span className='line-clamp-1'>{item.name}</span>
                     <div className='profile flex items-center gap-2'>
@@ -109,6 +112,9 @@ const LibraryDropdown = () => {
         <Link
           href={`/profile/${page === 'courses' ? 'sets' : 'folders'}`}
           className='text-sm font-semibold flex flex-col w-full h-full justify-center gap-2 px-3 py-3 hover:bg-bottomHeader border-t border-[#313131] text-secondary hover:text-white'
+          onClick={() => {
+            setIsDropdownOpen(false)
+          }}
         >
           Xem tất cả {page === 'courses' ? 'học phần' : 'thư mục'}
         </Link>

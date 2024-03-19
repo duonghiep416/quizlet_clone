@@ -12,21 +12,60 @@ import {
 } from './CarouselSelectedSnapDisplay'
 import FlipCard from './FlipCard'
 import ConfettiComponent from './ConfettiComponent'
-import { PencilIcon } from '@heroicons/react/24/solid'
+import { PauseIcon, PlayIcon } from '@heroicons/react/24/solid'
 import OverviewFlashcard from './OverviewFlashcards'
 import ActionIcon from './ActionIcon'
 const TWEEN_FACTOR_BASE = 0.52
+import Autoplay from 'embla-carousel-autoplay'
+import SettingCarousel from './SettingCarousel'
+import EditFlashCardModal from './EditFlashcardModal'
 
 const numberWithinRange = (number, min, max) =>
   Math.min(Math.max(number, min), max)
 
 const EmblaCarousel = (props) => {
-  const { slides, options, backs } = props
-  const [emblaRef, emblaApi] = useEmblaCarousel(options)
+  const { slides, options, backs, ids, setCards, setNewData } = props
+  console.log(slides)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [setting, setSetting] = useState({
+    autoplayDelay: 3000,
+    isAutoPlayLoop: false
+  })
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(options, [
+    Autoplay({
+      playOnInit: false,
+      delay: setting.autoplayDelay,
+      stopOnLastSnap: !setting.isAutoPlayLoop
+    })
+  ])
+  const onButtonAutoplayClick = useCallback(
+    (callback) => {
+      const autoplay = emblaApi?.plugins()?.autoplay
+      if (!autoplay) return
+
+      const resetOrStop =
+        autoplay.options.stopOnInteraction === false
+          ? autoplay.reset
+          : autoplay.stop
+
+      resetOrStop()
+      callback()
+    },
+    [emblaApi]
+  )
+
+  const toggleAutoplay = useCallback(() => {
+    const autoplay = emblaApi?.plugins()?.autoplay
+    if (!autoplay) return
+
+    const playOrStop = autoplay.isPlaying() ? autoplay.stop : autoplay.play
+    playOrStop()
+  }, [emblaApi])
+
   const [scrollProgress, setScrollProgress] = useState(0)
   const [isFlipped, setIsFlipped] = React.useState(false)
   const [isRunning, setIsRunning] = useState(false)
-
   const tweenFactor = useRef(0)
   const tweenNodes = useRef([])
   const { selectedSnap, snapCount } = useSelectedSnapDisplay(emblaApi)
@@ -56,6 +95,16 @@ const EmblaCarousel = (props) => {
     emblaApi.on('reInit', onScroll)
     emblaApi.on('scroll', onScroll)
   }, [emblaApi, onScroll])
+  useEffect(() => {
+    const autoplay = emblaApi?.plugins()?.autoplay
+    if (!autoplay) return
+
+    setIsPlaying(autoplay.isPlaying())
+    emblaApi
+      .on('autoplay:play', () => setIsPlaying(true))
+      .on('autoplay:stop', () => setIsPlaying(false))
+      .on('reInit', () => setIsPlaying(false))
+  }, [emblaApi])
   const setTweenNodes = useCallback((emblaApi) => {
     tweenNodes.current = emblaApi.slideNodes().map((slideNode) => {
       return slideNode.querySelector('.embla__slide__number')
@@ -127,9 +176,19 @@ const EmblaCarousel = (props) => {
             <div className='embla__slide card__flip_container' key={index}>
               {/* Nội dung */}
               <div className='embla__slide__number card__flip_content relative'>
-                <div className='action-container absolute z-10 right-3 top-3'>
-                  <ActionIcon type='edit' tooltip='Sửa' />
-                </div>
+                {index !== slides.length && (
+                  <div className='action-container absolute z-10 right-3 top-3'>
+                    <EditFlashCardModal
+                      card={{
+                        terminology: content,
+                        definition: backs[index],
+                        id: ids[index]
+                      }}
+                      setCards={setCards}
+                      setNewData={setNewData}
+                    />
+                  </div>
+                )}
                 <FlipCard
                   frontContent={content}
                   backContent={backs[index] || ''}
@@ -150,25 +209,54 @@ const EmblaCarousel = (props) => {
       </div>
       <div className='embla__controls'>
         <div className='embla__buttons'>
-          <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
+          <button
+            className='embla__play'
+            onClick={() => {
+              setIsFlipped(false)
+              toggleAutoplay()
+            }}
+            type='button'
+          >
+            <ActionIcon
+              tooltip={isPlaying ? 'Dừng tự động phát' : 'Tự động phát'}
+              IconComponent={isPlaying ? PauseIcon : PlayIcon}
+              iconStyle={{ width: '24px', height: '24px' }}
+              styleContainer={{
+                width: '40px',
+                height: '40px',
+                backgroundColor: 'transparent'
+              }}
+            />
+          </button>
+          <PrevButton
+            onClick={() => {
+              setIsFlipped(false)
+              onButtonAutoplayClick(onPrevButtonClick)
+            }}
+            disabled={prevBtnDisabled}
+          />
           <SelectedSnapDisplay
             selectedSnap={selectedSnap}
             snapCount={snapCount}
           />
           <NextButton
             onClick={() => {
+              setIsFlipped(false)
               if (selectedSnap === slides.length - 1) handleFireConfetti()
-              onNextButtonClick()
+              onButtonAutoplayClick(onNextButtonClick)
             }}
             disabled={nextBtnDisabled}
           />
         </div>
+        <div className='flex gap-3'>
+          <div className='embla__progress'>
+            <div
+              className='embla__progress__bar'
+              style={{ transform: `translate3d(${scrollProgress}%,0px,0px)` }}
+            />
+          </div>
 
-        <div className='embla__progress'>
-          <div
-            className='embla__progress__bar'
-            style={{ transform: `translate3d(${scrollProgress}%,0px,0px)` }}
-          />
+          <SettingCarousel />
         </div>
       </div>
     </div>

@@ -45,14 +45,14 @@ const FlipCard = ({
     >
       <div
         onClick={handleClick}
-        className='w-full h-full flex items-center justify-center select-none'
+        className='w-full h-full p-10 text-justify flex items-center justify-center select-none'
       >
         {frontContent}
         {customChild && customChild}
       </div>
       <div
         onClick={handleClick}
-        className='w-full h-full flex items-center justify-center select-none'
+        className='w-full h-full p-10 text-justify flex items-center justify-center select-none'
       >
         {backContent}
       </div>

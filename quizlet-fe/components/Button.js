@@ -23,7 +23,7 @@ const Button = ({
   return (
     <As
       style={style}
-      className={`rounded-lg px-3 py-2 text-sm font-semibold flex gap-2 items-center justify-center transition-all ${color[btnType]} cursor-pointer`}
+      className={`rounded-lg px-3 py-2 text-sm font-semibold flex gap-2 items-center justify-center transition-all ${color[btnType]} cursor-pointer select-none`}
       onClick={onClick}
       type={type || 'submit'}
       {...props}

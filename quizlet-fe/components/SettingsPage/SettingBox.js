@@ -4,7 +4,7 @@ const SettingBox = ({ icon, title, children, typeImage }) => {
   }
   return (
     <div className='flex justify-between gap-5'>
-      <div className='setting-box-title flex flex-col items-center gap-3 w-52'>
+      <div className='setting-box-title flex flex-col items-center gap-3 w-52 min-w-52'>
         <img
           src={icon}
           alt=''

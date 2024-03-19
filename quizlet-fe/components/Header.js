@@ -78,7 +78,9 @@ const Header = () => {
                       />
                     )}
                   </Link>
-                  {isDropdownOpen && navItem.isDropDown && <LibraryDropdown />}
+                  {isDropdownOpen && navItem.isDropDown && (
+                    <LibraryDropdown setIsDropdownOpen={setIsDropdownOpen} />
+                  )}
                 </li>
               )
             })}

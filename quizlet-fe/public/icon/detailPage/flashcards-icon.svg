@@ -1,0 +1,4 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" class="AssemblyIcon AssemblyIcon--large" role="presentation" width="64"  height="64" ><defs><symbol fill="none" id="study-flashcards-twilight" viewBox="0 0 32 32">
+<path d="M7.72705 12.8246C7.72705 11.2646 8.97351 10 10.5111 10H27.2157C28.7533 10 29.9998 11.2646 29.9998 12.8246V25.1754C29.9998 26.7354 28.7533 28 27.2157 28H10.5111C8.97351 28 7.72705 26.7354 7.72705 25.1754V12.8246Z" fill="#7583FF"></path>
+<path d="M2 6.82456C2 5.2646 3.25358 4 4.79996 4H21.6001C23.1465 4 24.4001 5.2646 24.4001 6.82456V19.1754C24.4001 20.7354 23.1465 22 21.6001 22H4.79996C3.25358 22 2 20.7354 2 19.1754V6.82456Z" fill="#4255FF"></path>
+</symbol></defs><noscript fill="#F6F7FB"></noscript><use xlink:href="#study-flashcards-twilight" fill="#F6F7FB"></use><noscript fill="#F6F7FB"></noscript></svg>

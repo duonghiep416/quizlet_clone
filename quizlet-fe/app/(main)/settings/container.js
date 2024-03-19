@@ -97,7 +97,7 @@ const ContainerSetting = () => {
         }`}
         title='Ảnh hồ sơ'
       >
-        <div className='selected-avatar mb-5 flex gap-3'>
+        <div className='selected-avatar mb-5 flex gap-3 flex-wrap'>
           {avatars.map((avatar) => (
             <AvatarPreview
               key={avatar.id}

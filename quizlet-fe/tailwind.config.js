@@ -36,7 +36,9 @@ module.exports = {
             gray: '#d9dde8',
             'gray-600': '#6a748e',
             red: '#D90202',
-            'gray-700': '#586380'
+            'gray-700': '#586380',
+            'gray-main': '#2e3856',
+            'yellow-active': '#ffdc62'
           }
         }
       }

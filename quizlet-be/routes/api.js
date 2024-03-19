@@ -1,17 +1,23 @@
 var express = require('express')
 var router = express.Router()
+
+//Controllers
 const userController = require('../controllers/api/user.controller')
 const authController = require('../controllers/api/auth.controller')
 const courseController = require('../controllers/api/course.controller')
 const avatarController = require('../controllers/api/avatar.controller')
 const categoryController = require('../controllers/api/category.controller')
+const flashcardController = require('../controllers/api/flashcard.controller')
+
+//Middlewares
+const authMiddleware = require('../middlewares/api/auth.middleware')
+const { multerMiddleware } = require('../utils/multer.utils')
+
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const { ServerResponse } = require('http')
-const authMiddleware = require('../middlewares/api/auth.middleware')
 const { User } = require('../models/index')
-const { multerMiddleware } = require('../utils/multer.utils')
-const flashcardController = require('../controllers/api/flashcard.controller')
+
 /* GET home page. */
 
 // Users routes
@@ -109,6 +115,13 @@ router.post(
   '/check-password/:id',
   authMiddleware,
   courseController.checkPassword
+)
+
+// Flashcards
+router.patch(
+  '/flashcards/:id',
+  authMiddleware,
+  flashcardController.editFlashcard
 )
 
 module.exports = router

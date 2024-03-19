@@ -6,7 +6,7 @@ import { LockClosedIcon } from '@heroicons/react/24/solid'
 const SetItem = ({ item }) => {
   const user = useSelector((state) => state.user.userData)
   return (
-    <div className='set-item w-full bg-slate-400/25 h-24 flex flex-col justify-between mb-10 rounded-md px-5 pt-3 pb-4 relative'>
+    <div className='set-item w-full bg-slate-400/25 h-24 flex flex-col justify-between mb-10 rounded-md px-5 pt-3 pb-4 relative overflow-hidden'>
       {user && (
         <UserInfo avatar={user.avatar} name={user.name}>
           | {item.created_at}
