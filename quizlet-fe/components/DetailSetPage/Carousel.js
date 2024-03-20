@@ -25,7 +25,6 @@ const numberWithinRange = (number, min, max) =>
 
 const EmblaCarousel = (props) => {
   const { slides, options, backs, ids, setCards, setNewData } = props
-  console.log(slides)
   const [isPlaying, setIsPlaying] = useState(false)
   const [setting, setSetting] = useState({
     autoplayDelay: 3000,

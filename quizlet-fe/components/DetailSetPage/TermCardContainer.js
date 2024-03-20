@@ -1,7 +1,8 @@
+import Link from 'next/link'
 import Button from '../Button'
 import TermCard from './TermCard'
 
-const TermCardContainer = ({ cards, setCards, setNewData }) => {
+const TermCardContainer = ({ cards, setCards, setNewData, setId }) => {
   return (
     <>
       <div className='flex flex-col gap-5 mt-11'>
@@ -18,16 +19,18 @@ const TermCardContainer = ({ cards, setCards, setNewData }) => {
           />
         ))}
       </div>
-      <Button
-        type='button'
-        btnType='secondary'
-        content='Thêm hoặc xóa thuật ngữ'
-        style={{
-          fontSize: '18px',
-          padding: '15px',
-          margin: '30px auto'
-        }}
-      />
+      <Link href={`/detail/sets/${setId}/edit`}>
+        <Button
+          type='button'
+          btnType='secondary'
+          content='Thêm hoặc xóa thuật ngữ'
+          style={{
+            fontSize: '18px',
+            padding: '15px',
+            margin: '30px auto'
+          }}
+        />
+      </Link>
     </>
   )
 }

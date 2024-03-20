@@ -254,7 +254,14 @@ module.exports = {
   updateCourse: async (req, res) => {
     const { id: userId } = req.user
     const { id } = req.params
-    const { name, is_public, category_id = null, flashcards = [] } = req.body
+    const {
+      name,
+      description,
+      is_public,
+      category_id = null,
+      password,
+      flashcards = []
+    } = req.body
     const response = {}
     if (Object.keys(req.body).length === 0) {
       Object.assign(response, {
@@ -292,11 +299,23 @@ module.exports = {
       })
       return res.status(response.status).json(response)
     }
-    const updatedCourse = await course.update({
-      name,
-      is_public,
-      category_id
-    })
+    const dataUpdate = {}
+    if (name) {
+      dataUpdate.name = name
+    }
+    if (description) {
+      dataUpdate.description = description
+    }
+    if (is_public) {
+      dataUpdate.is_public = is_public
+    }
+    if (category_id) {
+      dataUpdate.category_id = category_id
+    }
+    if (password) {
+      dataUpdate.password = genPassHash(password)
+    }
+    const updatedCourse = await course.update(dataUpdate)
     flashcards.forEach((flashcard, index) => {
       if (!flashcard.front_content || !flashcard.back_content) {
         Object.assign(response, {

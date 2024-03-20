@@ -1,17 +1,6 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
 import Cookies from 'js-cookie'
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  useDisclosure,
-  Input,
-  Link
-} from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import Carousel from '@/components/DetailSetPage/Carousel'
 import HeadingPage from '@/components/DetailSetPage/HeadingPage'
@@ -78,6 +67,7 @@ const DetailSetPage = ({ params }) => {
             cards={newData?.data?.flashcards}
             setCards={setCards}
             setNewData={setNewData}
+            setId={id}
           />
         </>
       )}

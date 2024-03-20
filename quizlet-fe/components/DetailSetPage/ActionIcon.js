@@ -11,7 +11,8 @@ const ActionIcon = ({
   styleContainer,
   iconStyle,
   contentStyle,
-  isActive
+  isActive,
+  ...props
 }) => {
   const [active, setActive] = useState(isActive || false)
   return (
@@ -23,6 +24,7 @@ const ActionIcon = ({
           setActive(!active)
         }
       }}
+      {...props}
     >
       <Tooltip
         content={tooltip}
