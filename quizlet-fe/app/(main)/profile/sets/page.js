@@ -56,7 +56,7 @@ const SetsPage = () => {
         {sets &&
           sets.map((item, index) => {
             return (
-              <Link href={`/detail/sets/${item.id}`} key={index}>
+              <Link href={`/detail/sets?id=${item.id}`} key={index}>
                 <SetItem key={index} item={item} />
               </Link>
             )

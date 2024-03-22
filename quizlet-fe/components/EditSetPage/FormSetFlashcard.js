@@ -4,19 +4,31 @@ import { Reorder, useDragControls, useMotionValue } from 'framer-motion'
 import { ReorderIcon } from './ReorderIcon'
 import { useRaisedShadow } from './use-raised-shadow'
 import { Textarea } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const FormSetFlashcard = ({ item, index, setFlashcards }) => {
   const y = useMotionValue(0)
   const boxShadow = useRaisedShadow(y)
   const dragControls = useDragControls()
   const [flashcard, setFlashcard] = useState(item)
+  useEffect(() => {
+    function areFlashcardsEqual(flashcard1, flashcard2) {
+      return (
+        flashcard1.front_content === flashcard2.front_content &&
+        flashcard1.back_content === flashcard2.back_content
+      )
+    }
+
+    if (!areFlashcardsEqual(flashcard, item)) {
+      setFlashcard(item)
+    }
+  }, [item])
   const handleDelete = () => {
     setFlashcards((prev) => prev.filter((_, i) => i !== index))
   }
   return (
     <Reorder.Item
-      value={item}
+      value={item.id}
       id={index}
       style={{ boxShadow, y }}
       dragListener={false}

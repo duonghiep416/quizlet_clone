@@ -8,9 +8,11 @@ import Navigation from '@/components/DetailSetPage/Navigation'
 import SetPageHeader from '@/components/DetailSetPage/SetPageHeader'
 import TermCardContainer from '@/components/DetailSetPage/TermCardContainer'
 import RequiredPasswordModal from '@/components/DetailSetPage/RequiredPasswordModal'
-const DetailSetPage = ({ params }) => {
+import { notFound } from 'next/navigation'
+const DetailSetPage = ({ searchParams }) => {
   const accessToken = Cookies.get('accessToken')
-  const { id } = params
+  const { id } = searchParams
+  if (!id) return notFound()
   const [newData, setNewData] = useState(null)
   const [cards, setCards] = useState({})
   const { data } = useQuery({
@@ -61,6 +63,7 @@ const DetailSetPage = ({ params }) => {
             ids={cards?.ids}
             setCards={setCards}
             setNewData={setNewData}
+            setId={id}
           />
           <SetPageHeader />
           <TermCardContainer

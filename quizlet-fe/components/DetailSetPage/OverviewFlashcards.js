@@ -1,9 +1,29 @@
 import Image from 'next/image'
 import StudyMode from './StudyMode'
 import { ChevronRightIcon } from '@heroicons/react/24/solid'
+import Link from 'next/link'
+import Button from '../Button'
 
 const OverviewFlashcard = (props) => {
-  const { numberOfFlashcards } = props
+  const { numberOfFlashcards, setId } = props
+  if (!numberOfFlashcards)
+    return (
+      <div>
+        <p className='text-2xl text-gray-500'>
+          Bạn chưa tạo bất kỳ thẻ ghi nhớ nào trong học phần
+        </p>
+        <Link href={`/detail/sets/edit?id=${setId}`}>
+          <Button
+            btnType='transparent'
+            content='Bắt đầu tạo thẻ ghi nhớ ngay bây giờ!'
+            style={{
+              margin: '20px auto',
+              border: '2px solid #fff'
+            }}
+          />
+        </Link>
+      </div>
+    )
   return (
     <div className='w-full h-full p-6 cursor-auto'>
       <div className='heading flex items-center gap-3'>

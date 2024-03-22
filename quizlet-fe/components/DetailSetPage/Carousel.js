@@ -24,7 +24,7 @@ const numberWithinRange = (number, min, max) =>
   Math.min(Math.max(number, min), max)
 
 const EmblaCarousel = (props) => {
-  const { slides, options, backs, ids, setCards, setNewData } = props
+  const { slides, options, backs, ids, setCards, setNewData, setId } = props
   const [isPlaying, setIsPlaying] = useState(false)
   const [setting, setSetting] = useState({
     autoplayDelay: 3000,
@@ -197,7 +197,10 @@ const EmblaCarousel = (props) => {
                   }}
                   customChild={
                     index === slides.length ? (
-                      <OverviewFlashcard numberOfFlashcards={slides.length} />
+                      <OverviewFlashcard
+                        numberOfFlashcards={slides.length}
+                        setId={setId}
+                      />
                     ) : null
                   }
                 />

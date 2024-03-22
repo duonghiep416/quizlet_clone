@@ -258,7 +258,7 @@ module.exports = {
       name,
       description,
       is_public,
-      category_id = null,
+      category_id,
       password,
       flashcards = []
     } = req.body
@@ -309,13 +309,26 @@ module.exports = {
     if (is_public) {
       dataUpdate.is_public = is_public
     }
-    if (category_id) {
+    if (category_id === null || category_id) {
       dataUpdate.category_id = category_id
     }
     if (password) {
       dataUpdate.password = genPassHash(password)
     }
     const updatedCourse = await course.update(dataUpdate)
+    if (flashcards.length === 0) {
+      await Flashcard.destroy({
+        where: {
+          user_id: userId,
+          course_id: id
+        }
+      })
+      Object.assign(response, {
+        status: 200,
+        message: 'Success'
+      })
+      return res.status(response.status).json(response)
+    }
     flashcards.forEach((flashcard, index) => {
       if (!flashcard.front_content || !flashcard.back_content) {
         Object.assign(response, {

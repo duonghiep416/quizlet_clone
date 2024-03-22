@@ -85,9 +85,9 @@ const LibraryDropdown = ({ setIsDropdownOpen }) => {
               >
                 <li className='hover:bg-bottomHeader'>
                   <Link
-                    href={`/detail/${page === 'courses' ? 'sets' : 'folders'}/${
-                      item.id
-                    }`}
+                    href={`/detail/${
+                      page === 'courses' ? 'sets' : 'folders'
+                    }?id=${item.id}`}
                     className='text-base font-bold flex flex-col w-full h-full justify-center gap-2 px-4 py-3 hover:bg-bottomHeader'
                     onClick={() => {
                       setIsDropdownOpen(false)

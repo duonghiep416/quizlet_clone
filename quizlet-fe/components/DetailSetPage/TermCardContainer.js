@@ -19,7 +19,7 @@ const TermCardContainer = ({ cards, setCards, setNewData, setId }) => {
           />
         ))}
       </div>
-      <Link href={`/detail/sets/${setId}/edit`}>
+      <Link href={`/detail/sets/edit?id=${setId}`}>
         <Button
           type='button'
           btnType='secondary'

@@ -1,3 +1,4 @@
+import { Toaster } from 'sonner'
 import './globals.css'
 import Providers from '@/components/Providers'
 // const inter = Inter({ subsets: ["latin"] });
@@ -13,6 +14,7 @@ export default function RootLayout({ children }) {
     <html lang='en' className='dark'>
       <body className='min-h-screen'>
         <Providers>{children}</Providers>
+        <Toaster richColors />
       </body>
     </html>
   )
