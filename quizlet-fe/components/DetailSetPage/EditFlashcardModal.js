@@ -13,7 +13,7 @@ import {
 import ActionIcon from './ActionIcon'
 import { useState } from 'react'
 import Cookies from 'js-cookie'
-const EditFlashCardModal = ({ card, setCards, setNewData }) => {
+const EditFlashCardModal = ({ card, setCards, setNewData, isPassword }) => {
   const accessToken = Cookies.get('accessToken')
   const { terminology, definition, id } = card
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -98,10 +98,18 @@ const EditFlashCardModal = ({ card, setCards, setNewData }) => {
                   defaultValue={terminology}
                   onChange={handleChangeValue}
                   name='terminology'
+                  isInvalid={data.terminology}
+                  errorMessage={
+                    data.terminology ? '' : 'Thuật ngữ không được để trống'
+                  }
                 />
                 <Input
                   label='Định nghĩa'
                   defaultValue={definition}
+                  isInvalid={data.definition}
+                  errorMessage={
+                    data.definition ? '' : 'Định nghĩa không được để trống'
+                  }
                   name='definition'
                   onChange={handleChangeValue}
                 />

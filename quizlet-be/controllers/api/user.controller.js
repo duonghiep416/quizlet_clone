@@ -1,11 +1,19 @@
 const { response } = require('express')
-const { User } = require('../../models/index')
+const { User, UserRole } = require('../../models/index')
 const { Op } = require('sequelize')
 const { object, string } = require('yup')
 const bcrypt = require('bcrypt')
 module.exports = {
   index: async (req, res) => {
-    const { order = 'asc', sort = 'id', status, q, limit, page = 1 } = req.query
+    const {
+      order = 'asc',
+      sort = 'id',
+      status,
+      role,
+      q,
+      limit = 10,
+      page = 1
+    } = req.query
 
     const response = {}
     const filters = {}
@@ -22,10 +30,26 @@ module.exports = {
         }
       }
     }
+    const includeRoles = {
+      model: UserRole,
+      as: 'roles',
+      attributes: ['role_id'],
+      include: {
+        association: 'role',
+        attributes: ['name']
+      }
+    }
+    if (role) {
+      includeRoles.where = {
+        role_id: +role
+      }
+    }
+    console.log(includeRoles)
     const options = {
       order: [[sort, order]],
       attributes: { exclude: ['password'] },
-      where: filters
+      where: filters,
+      include: [includeRoles]
     }
     if (limit && Number.isInteger(+limit)) {
       const offset = (page - 1) * limit
@@ -34,11 +58,16 @@ module.exports = {
     }
     try {
       const { count, rows: users } = await User.findAndCountAll(options)
+      for (const user of users) {
+        user.dataValues.role = user.dataValues.roles.role.name
+        delete user.dataValues.roles
+      }
       response.status = 200
       response.message = 'Success'
       response.data = users
       response.count = count
     } catch (error) {
+      console.log(error)
       response.status = 500
       response.message = 'SERVER ERROR'
     }

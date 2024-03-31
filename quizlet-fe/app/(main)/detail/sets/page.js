@@ -64,8 +64,9 @@ const DetailSetPage = ({ searchParams }) => {
             setCards={setCards}
             setNewData={setNewData}
             setId={id}
+            isPassword={data?.isPassword}
           />
-          <SetPageHeader />
+          <SetPageHeader isPassword={data?.isPassword} />
           <TermCardContainer
             cards={newData?.data?.flashcards}
             setCards={setCards}

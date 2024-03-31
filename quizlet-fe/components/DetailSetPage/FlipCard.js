@@ -17,6 +17,8 @@ const FlipCard = ({
     <ReactCardFlip
       isFlipped={isFlipped}
       flipDirection='vertical'
+      flipSpeedBackToFront={0.4}
+      flipSpeedFrontToBack={0.4}
       containerStyle={{
         width: '100%',
         height: '100%',

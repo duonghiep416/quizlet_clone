@@ -24,7 +24,16 @@ const numberWithinRange = (number, min, max) =>
   Math.min(Math.max(number, min), max)
 
 const EmblaCarousel = (props) => {
-  const { slides, options, backs, ids, setCards, setNewData, setId } = props
+  const {
+    slides,
+    options,
+    backs,
+    ids,
+    setCards,
+    setNewData,
+    setId,
+    isPassword
+  } = props
   const [isPlaying, setIsPlaying] = useState(false)
   const [setting, setSetting] = useState({
     autoplayDelay: 3000,
@@ -97,7 +106,6 @@ const EmblaCarousel = (props) => {
   useEffect(() => {
     const autoplay = emblaApi?.plugins()?.autoplay
     if (!autoplay) return
-
     setIsPlaying(autoplay.isPlaying())
     emblaApi
       .on('autoplay:play', () => setIsPlaying(true))

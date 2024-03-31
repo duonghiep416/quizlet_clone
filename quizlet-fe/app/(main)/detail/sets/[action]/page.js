@@ -12,6 +12,7 @@ import { toast } from 'sonner'
 import ActionIcon from '@/components/DetailSetPage/ActionIcon'
 import { ArrowsRightLeftIcon } from '@heroicons/react/24/solid'
 import { Cog6ToothIcon } from '@heroicons/react/24/outline'
+import Loading from '@/components/Loading'
 const EditSetPage = (request) => {
   const accessToken = Cookies.get('accessToken')
   const router = useRouter()
@@ -81,9 +82,9 @@ const EditSetPage = (request) => {
   useEffect(() => {
     const patchData = async (dataUpdate) => {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API}/courses/${id}`,
+        `${process.env.NEXT_PUBLIC_API}/courses/${action === 'edit' ? id : ''}`,
         {
-          method: 'PATCH',
+          method: action === 'edit' ? 'PATCH' : 'POST',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${accessToken}`
@@ -116,7 +117,11 @@ const EditSetPage = (request) => {
         loading: 'Đang cập nhật...',
         success: (data) => {
           if (data.status === 200) {
-            router.push(`/detail/sets?id=${id}`)
+            router.push(
+              `/detail/sets?id=${
+                action === 'edit' ? data.data.id : data.data.course.id
+              }`
+            )
             return 'Cập nhật thành công'
           }
         },
@@ -160,7 +165,7 @@ const EditSetPage = (request) => {
   }
   return (
     <>
-      {flashcards && (
+      {flashcards ? (
         <div>
           <FormSetData
             defaultMetadata={defaultMetadata}
@@ -241,6 +246,8 @@ const EditSetPage = (request) => {
             }}
           />
         </div>
+      ) : (
+        <Loading isLoading={true} />
       )}
     </>
   )
