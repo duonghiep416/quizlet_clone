@@ -8,6 +8,7 @@ const courseController = require('../controllers/api/course.controller')
 const avatarController = require('../controllers/api/avatar.controller')
 const categoryController = require('../controllers/api/category.controller')
 const flashcardController = require('../controllers/api/flashcard.controller')
+const roleController = require('../controllers/api/role.controller')
 
 //Middlewares
 const authMiddleware = require('../middlewares/api/auth.middleware')
@@ -125,6 +126,6 @@ router.patch(
 )
 
 // Role
-// router.post('/roles', authMiddleware, userController.storeRole)
+router.get('/roles', roleController.getRole)
 
 module.exports = router

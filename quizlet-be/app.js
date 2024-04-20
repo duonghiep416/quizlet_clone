@@ -18,7 +18,7 @@ var apiRouter = require('./routes/api')
 //Cors
 const cors = require('cors')
 const corsOptions = {
-  origin: 'http://localhost:3001', // Replace with your frontend's origin
+  origin: `${process.env.CLIENT_URL}`, // Replace with your frontend's origin
   credentials: true, // Allow cookies and authentication headers
   optionSuccessStatus: 200 // Return 200 for preflight requests
 }
@@ -38,7 +38,7 @@ app.use(helmet())
 app.use(compression())
 app.use(cors(corsOptions))
 app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3001')
+  res.header('Access-Control-Allow-Origin', `${process.env.CLIENT_URL}`)
   res.header('Access-Control-Allow-Headers', true)
   res.header('Access-Control-Allow-Credentials', true)
   res.header('Cross-Origin-Resource-Policy', 'cross-origin')

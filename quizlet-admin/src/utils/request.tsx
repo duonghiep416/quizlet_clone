@@ -7,7 +7,7 @@ interface IFilter {
   role?: string;
   q?: string;
 }
-const get = async (url: string, filter: IFilter) => {
+const get = async (url: string, filter?: IFilter) => {
   const stringifiedFilter: Record<string, string> = {};
 
   for (const key in filter) {
