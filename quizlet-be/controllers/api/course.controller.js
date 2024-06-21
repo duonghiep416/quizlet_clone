@@ -244,6 +244,7 @@ module.exports = {
         }
       })
     } catch (error) {
+      console.error(error)
       Object.assign(response, {
         status: 500,
         message: 'Internal server error'

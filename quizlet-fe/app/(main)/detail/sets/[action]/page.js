@@ -117,7 +117,7 @@ const EditSetPage = (request) => {
         loading: 'Đang cập nhật...',
         success: (data) => {
           if (data.status === 200) {
-            router.push(`/detail/sets/edit?id=${id}`)
+            router.push(`/detail/sets/edit?id=${data.data.course.id}`)
             return 'Cập nhật thành công'
           }
         },

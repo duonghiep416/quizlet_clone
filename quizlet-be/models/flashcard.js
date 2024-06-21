@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       front_content: DataTypes.STRING,
       back_content: DataTypes.STRING,
       user_id: DataTypes.INTEGER,
-      course_id: DataTypes.INTEGER,
+      course_id: DataTypes.STRING,
       order: DataTypes.INTEGER,
       created_at: DataTypes.DATE,
       updated_at: DataTypes.DATE

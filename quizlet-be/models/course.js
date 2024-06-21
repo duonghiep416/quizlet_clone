@@ -1,5 +1,5 @@
 'use strict'
-const { Model } = require('sequelize')
+const { Model, UUID, UUIDV4} = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Course extends Model {
     /**
@@ -21,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
       id: {
         autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.INTEGER
+        defaultValue: DataTypes.UUIDV4,
+        type: UUIDV4
       },
       name: DataTypes.STRING,
       description: DataTypes.STRING,

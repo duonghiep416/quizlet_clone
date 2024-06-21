@@ -22,7 +22,7 @@ module.exports = {
         allowNull: false
       },
       course_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: true
       },
       order: {
